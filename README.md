@@ -2,7 +2,7 @@
 
 ### What is Cloud Computing
 
-Cloud computing is a term used to describe the use of hardware and software delivered via network (usually the Internet). So is a paradigm that allows computing services to be offered through a network, which is usually the internet. Simply put, cloud computing is the delivery of computing services – including servers, storage, databases, networking, software, analytics and intelligence – over the Internet (“the cloud”).
+Cloud computing is a term used to describe the use of hardware and software delivered via network (usually the Internet). So is a paradigm that allows computing services to be offered through a network, which is usually the internet. Simply put, cloud computing is the delivery of computing services – including servers, storage, databases, networking, software, analytics and intelligence – over the Internet (“the cloud”) based in ease of use, flexibility, robustness, cost.
 
 - Benefits:
 
@@ -33,3 +33,19 @@ Amazon Web Services (AWS) is an extension of amazon providing on-demand cloud co
 2. Flexible: With AWS, you receive a virtual environment that lets you load the software and services your application requires.
 
 3. Cost-Effective: you pay only for the computer power.
+
+Industry who are using it:
+
+- Netflix
+- Twitch
+- LinkedIn
+- Facebook
+- BBC
+
+### Cloud Infrastucture
+
+![CLOUD](./Cloud_Infrastructure.png)
+
+### AWS - TIER 2
+
+![AWS_Scheme](./AWS.png)
