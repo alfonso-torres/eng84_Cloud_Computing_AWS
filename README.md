@@ -24,6 +24,12 @@ The flexibility of the cloud allows for environments to be built up, tested and 
 
 ### What is AWS
 
+Amazon Web Services (AWS) is an extension of amazon providing on-demand cloud computing platforms and APIs to individuals, companies, on a metered pay-as-you-go basis.
+
 - 3 advantages of AWS/who is using AWS in the industry:
 
+1. Easy to use: quickly and securely to host your applications.
 
+2. Flexible: With AWS, you receive a virtual environment that lets you load the software and services your application requires.
+
+3. Cost-Effective: you pay only for the computer power.
