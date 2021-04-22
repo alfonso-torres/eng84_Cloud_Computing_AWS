@@ -59,8 +59,6 @@ __Industry who are using it:__
 
 ### Types of Cloud Computing
 
-Not all clouds are the same and not one type of cloud computing is right for everyone. Several different models, types and services have evolved to help offer the right solution for your needs.
-
 There are three different ways to deploy cloud services: on a public cloud, private cloud or hybrid cloud.
 
 ![CLOUD](./Cloud_Infrastructure.png)
@@ -81,11 +79,15 @@ Hybrid clouds combine public and private clouds, bound together by technology th
 
 - __Scale Out/Vertical__:
 
-Scaling out a microservices application can be as simple as spinning up a new container running a webserver app and adding it to the load balancer pool. When scaling out the idea is that it is possible to add identical services to a system to increase performance. (Add new server)
+Scaling out a microservices application can be as simple as spinning up a new container running a webserver app and adding it to the load balancer pool. When scaling out the idea is that it is possible to add identical services to a system to increase performance. 
+
+Scaling out is adding more equivalently functional components in parallel to spread out a load. This would be going from two load-balanced web server instances to three instances. Scaling up, in contrast, is making a component larger or faster to handle a greater load. (For example, add new server)
 
 - __Scale Up/Horizontal__:
 
-The target is to increase the resources supporting your application to reach or maintain adequate performance. In a hardware-centric world, this might mean adding a larger hard drive to a computer for increased storage capacity. (make a bigger server)
+The target is to increase the resources supporting your application to reach or maintain adequate performance. In a hardware-centric world, this might mean adding a larger hard drive to a computer for increased storage capacity.
+
+The goal is to increase the resources supporting your application to reach or maintain adequate performance (For example, make a bigger server)
 
 ![SCALING](./scaling.png)
 
