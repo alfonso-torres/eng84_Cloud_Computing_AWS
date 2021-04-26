@@ -91,10 +91,45 @@ The goal is to increase the resources supporting your application to reach or ma
 
 ![SCALING](./scaling.png)
 
+### Architectures
 
-### AWS - Set Up - Two-Tier Architecture - EC2
+- __Monolithic:__
 
-![AWS_Scheme](./AWS.png)
+![MONOLITHIC](./Monolithic.png)
+
+The difference is that when we configure our virtualization environment with vagrant, we use the monolith architecture, it means, everything in the same place, with no backup. All the code and the different parts of it are built together. The Monolithic application describes a single-tiered software application in which different components combined into a single program from a single platform. 
+
+A single-tier application has all the layers, such as presentation, application and database in the same 'package'. This means that the application and database are on the same host. Single-tier applications are vulnerable and non-flexible. Everything is in the same "box". Any changes made in the app means the entire machine has to restart. So complex replication (Stateful)
+
+- __Two-Tier:__
+
+![2_TIER](./AWS.png)
+
+A two-tier architecture is a software architecture in which a presentation layer or interface runs on a client, and a data layer or data structure gets stored on a server. Separating these two components into different locations represents a two-tier architecture, as opposed to a single-tier architecture. Two tier architecture provides added security to the DBMS(A database management system) as it is not exposed to the end-user directly. It also provides direct and faster communication.
+
+Wherewith our scenario is the following:
+
+- 2 different machines on the same cloud, eg:
+- Ubuntu 16.04 app EC2 with Nodejs and Nginx - Public IP
+- Ubuntu 16.04 for Mongo DB - No public IP, only accessible from the app machine.
+- Can restart the app without restarting the database
+
+When the presentation layer (interface) runs on a client and a data layer/structure (database) gets stored on a server. Basically, when each instance is run on a separate machine. It separates these two components into different locations. Having separate layers can improve performance and scalability. Easy to maintain.
+
+- __Three-Tier:__
+
+![3_TIER](./three_tier.png)
+
+- It is used in web based applications.
+- Presentation layer, application layer, and data layer.
+- It offers higher level of security. Improves data integrity.
+
+- __Microservices:__
+
+Arranged an application as a collection of loosely coupled services. Fine-grained and lightweight protocols.
+
+
+### AWS
 
 - __App server set up:__
 
@@ -115,18 +150,6 @@ Inside the machine run:
 9. Install all the dependencies, run the app and check if it is listening in the browser.
 
 deploy instance = vagrant up
-
-- __Two-Tier Architecture:__
-
-The difference is that when we configure our virtualization environment with vagrant, we use the monolith architecture, it means, everything in the same place, with no backup. All the code and the different parts of it are built together. 
-
-Now what we have is 2-Tier Architecture. A two-tier architecture is a software architecture in which a presentation layer or interface runs on a client, and a data layer or data structure gets stored on a server. Separating these two components into different locations represents a two-tier architecture, as opposed to a single-tier architecture. Two tier architecture provides added security to the DBMS(A database management system) as it is not exposed to the end-user directly. It also provides direct and faster communication.
-
-Wherewith our scenario is the following:
-
-- 2 different machines on the same cloud, eg:
-- Ubuntu 16.04 app EC2 with Nodejs and Nginx - Public IP
-- Ubuntu 16.04 for Mongo DB - No public IP, only accessible from the app machine.
 
 - __EC2:__
 
@@ -162,6 +185,8 @@ Use cases:
 
 - __Security Group:__
 
+![AWS_SG](./AWS_VPC.png)
+
 A firewall that enables you to specify the protocols, ports, and source IP ranges that can reach your instances using security groups.
 
 A security group acts as a virtual firewall for your EC2 instances to control incoming and outgoing traffic. Inbound rules control the incoming traffic to your instance, and outbound rules control the outgoing traffic from your instance. When you launch an instance, you can specify one or more security groups. You can add rules to each security group that allow traffic to or from its associated instances. You can modify the rules for a security group at any time.
@@ -171,6 +196,14 @@ When EC2 decides whether to allow traffic to reach an instance, it evaluates all
 When you launch an instance in a VPC, you must specify a security group that's created for that VPC.
 
 Wherewith it is our responsibility to control who has access to our instances!!!
+
+- __AMI:__
+
+An Amazon Machine Image (AMI) provides the information required to launch an instance. You must specify an AMI when you launch an instance. You can launch multiple instances from a single AMI when you need multiple instances with the same configuration. You can use different AMIs to launch instances when you need instances with different configurations.
+
+After you create and register an AMI, you can use it to launch new instances.
+
+Basically, is like create a snapshot of a VM instance, with all the configuration that we have installed it that so far, for use later or recover an instance if it has been deleted.
 
 - __Route tables/IP Table:__
 
@@ -182,10 +215,125 @@ Each route in a table specifies a destination and a target. For example, the des
 
 We define which are the gateways to our cloud.
 
-- __AMI:__
+- __Subnets:__
 
-An Amazon Machine Image (AMI) provides the information required to launch an instance. You must specify an AMI when you launch an instance. You can launch multiple instances from a single AMI when you need multiple instances with the same configuration. You can use different AMIs to launch instances when you need instances with different configurations.
+A subnet is a network inside a network. They make networks more efficient as network traffic can travel a shorter distance without passing through unnecessary routers to reach its destination. Is a logical subdivision of an IP network. The practice of dividing a network into two or more networks is called subnetting. Computers that belong to the same subnet are addressed with an identical most-significant bit-group in their IP. Perfect for security. For example, a subnet for teachers and another one for students.
 
-After you create and register an AMI, you can use it to launch new instances.
+- Public subnets have their traffic routed to an internet gateway.
+- Private subnets are not routed to an internet gateway, but its traffic is routed to a virtual private gateway for a Site-to-Site VPN connection (known as VPN-only subnet).
 
-Basically, is like create a snapshot of a VM instance, with all the configuration that we have installed it that so far, for use later or recover an instance if it has been deleted.
+- __Internet Gateway:__
+
+An internet gateway is a horizontally scaled and highly available VPC component that allows communication between your VPC and the internet. Provide a target in VPC route tables for internet-routable traffic and perform network address translation (NAT) for instances that have a public IPv4 address.
+
+- __Regions, Edge Locations and Availability Zones:__
+
+![AWS_Region](./aws_networking_sg.png)
+
+https://aws.amazon.com/about-aws/global-infrastructure/regions_az/
+
+- Region:
+A Regions are the physical locations where clusters of AWS data centers exist. By choosing a region for our application, we can choose to have our application be geographically close to our users, so that the connection latency can be reduced.
+
+- Availability Zone:
+Availability Zones correspond to discrete data centers with redundant power, networking and connectivity in an AWS Region. We can choose to host our application in one or more Availability Zones in order to have our application work in case there is an outage in a specific datacenter.
+
+- Edge Location:
+Edge Locations refer to locations from where the global CloudFront network can provide its service. The CloudFront service is a Content Delivery Network (CDN) that focuses on 'caching' responses from our website so that repeated requests are not handled by our servers. Along with other security features, like DDOS attack protection, the CDN provided by AWS is a useful feature to increase our application availability.
+
+How to make your app High availablity?
+
+Customers who care about the availability and performance of their applications want to deploy these applications across multiple AZs in the same region.
+
+The AWS control plane (including APIs) and AWS Management Console are distributed across AWS Regions and utilize a multi-AZ architecture within each region to deliver resilience and ensure continuous availability. This ensures that customers avoid having a critical service dependency on a single data center. AWS can conduct maintenance activities without making any critical service temporarily unavailable to any customer. IF FOR ANY REASON YOUR SERVICE STOPS WORKING IN ONE AREA, YOU WILL BE ABLE TO USE ANOTHER QUICKLY BECAUSE THEY ARE CONNECTED TO EACH OTHER.  AZs are connected to each other with fast, private fiber-optic networking, enabling you to easily architect applications that automatically fail-over between AZs without interruption. All the traffic will be automatically redirect to the server that is up.
+
+- Add multiple regions and providers in case of failure it redirect the trafic.
+- Highly available systems are reliable in the sense that they continue operating even when critical components fail. They are also resilient, meaning that they are able to simply handle failure without service disruption or data loss, and seamlessly recover from such failure.
+
+- Multi-cloud Arcitecture:
+
+Deploying the same app using different clouds (using two or more cloud service providers). This is to increase availability. If one goes down then we still have the other.
+
+- __NACL:__
+
+Stands Network Access Control List. Extra level of security. Is an additional layer of security for your VPC that acts as a firewall for controlling traffic in and out of one or more subnets. It controls inbound and outbound traffic for subnets. They are an added layer of security, on top of Security Groups. As they are applied for an entire subnet, they can be used to set inbound or outbound rules for every instance included in the subnet. Acts as a firewall for controlling traffic in and out of one or more subnets. 
+
+It operates at a subnet level - the rules apply to all the instances in the subnet (in addition to the SG rules applied to those instances).
+
+Components:
+
+- Type: Tells us about the type of traffic. SSH, HTTP, HTTPS
+- Protocol: The set of rules that are applied to every request
+- Portrange: The listening port
+- Inbound rules: Aka source. These rules talk about the source from where the request or traffic is coming from. Also about the destination port/ the port through which the response is sent
+- Outbound rule: Aka destination. These rules talk about where ther response should be sent. Also about the destination port
+- Allow/Deny: Whether the specific traffic has to be allowed or denied
+
+- __Stateful vs Stateless Filtering:__
+
+Stateful filtering tracks the origin of a request and can automatically allow the reply to the request to be returned to the originating computer. For example, a stateful filter that allows inbound traffic to tcp port 80 on a webserver will allow the return traffic, usually on a high numbered port (e.g. destination tcp port 63,912) to pass through the stateful filter between the client and the webserver. The filtering device maintains a state table that tracks the origin and destination port numbers and IP addresses. Only one rule is required on the filtering device: allow traffic inbound to the web server on tcp port 80).
+
+Security groups are stateful. This means that if they allow a request to come in they will always lets the response back out. Even if the outbound rules don't allow it. The outbound rules only apply to request made FROM your machine.
+
+NACLs are stateless. You have to have rules to allow the request to come in and to allow the response to go back out.
+
+Summary: Stateful filtering allows responses to go back out even if the outbound rules don't allow it. Stateless filtering will not allow for the responce to go through in the same scenario. Security groups are an example of a stateful filtering method, while NACLs are stateless.
+
+### AWS TASK - GUIDE
+
+![AWS_Task](./AWS_deployment_networking_security.png)
+
+<u>__STEP 1: Create the VPC__</u>
+
+- Click `Your VPCs`. Then `Create VPC`
+- Change the VPC nametag: `eng84_jose_vpc`
+- Configure IPv4 CIDR block to `0.0.0.0/16` where the first 2 numbers are unique. For example, `24.24.0.0/16`
+- Finally, `Create VPC`
+
+<u>__STEP 2: Create the Internet Gateway__</u>
+
+- Click `Internet Gateways`. Then `Create internet gateway`
+- Change the nametag: `eng84_jose_ig`
+- Click `Create Internet Gatway`.
+- Select the Internet Gateway you have created right now. Click `Actions`. Then `Attach to VPC`. Select the VPC you have created and attach the internet gateway.
+
+<u>__STEP 3: Create the subnets: Public and Private__</u>
+
+- First navigate to the subnet page and click the `create subnet` button.
+- Select your VPC.
+- Add the Subnet name as `eng84_jose_public_subnet`
+- Availability zone to `1c`.
+- IPv4 CIDR block to `24.24.1.0/24` as per the VPC IP. This is the IPV4 CIDR for this current subnet, the first two numbers of this must be the same as in VPC IPV4. The third number must be unique, it can't be the same as another subnet you have created. The fourth
+number must be 0. Finally we must follow that with /24.
+- Then click `Create Subnet`.
+- Repeat the above steps for the Private Subnet, but with the applicable name and the third number of the IPv4 CIDR block must be unique `24.24.2.0/24`.
+
+<u>__STEP 4: Managing the route tables__</u>
+
+- The first thing we have to do is go to the route table page and identify the one that is attached to our vpc. 
+- Rename it to `eng84_jose_public_rt`
+- Next you're going to want to give this subnet internet access by going to routes..
+- Click `Edit routes` and do the following:
+
+Set the destination to `0.0.0.0/0`.
+Set the target to `Internet Gateway`, then select your internet gateway.
+Save the configurations.
+
+- Now we will go back to the page we were on before and associate our public subnet with this route table, start by
+clicking on subnet associations and click on edit subnet associations. Select the public subnet you have created and click `save`.
+- Now we want to create a new route table for the private subnet (db) with no access to the internet. We will start by clicking
+create route table.
+- Set the Name tag: `eng84_jose_private_rt`.
+- Select your VPC and then click `Create`. NOTE: This route table is not connected to the internet.
+- We will now associate our private subnet in the same way as we did before.
+- With the new route table selected, select the Subnet Associations tab.
+- Click `Edit subnet associations` and select the private subnet you have created and finally save.
+- Your route tables are now setup.
+
+<u>__STEP 5: Creating the EC2 instances: App and DB__</u>
+
+<u>__STEP 6: Connecting to the instances__</u>
+
+<u>__STEP 7: Updating the database__</u>
+
+<u>__STEP 8: Adding a NACL to the VPC__</u>
