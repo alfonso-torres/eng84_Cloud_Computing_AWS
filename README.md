@@ -189,6 +189,8 @@ Use cases:
 
 A firewall that enables you to specify the protocols, ports, and source IP ranges that can reach your instances using security groups.
 
+It operates at a instance level.
+
 A security group acts as a virtual firewall for your EC2 instances to control incoming and outgoing traffic. Inbound rules control the incoming traffic to your instance, and outbound rules control the outgoing traffic from your instance. When you launch an instance, you can specify one or more security groups. You can add rules to each security group that allow traffic to or from its associated instances. You can modify the rules for a security group at any time.
 
 When EC2 decides whether to allow traffic to reach an instance, it evaluates all of the rules from all of the security groups that are associated with the instance.
@@ -283,57 +285,4 @@ Summary: Stateful filtering allows responses to go back out even if the outbound
 
 ![AWS_Task](./AWS_deployment_networking_security.png)
 
-<u>__STEP 1: Create the VPC__</u>
-
-- Click `Your VPCs`. Then `Create VPC`
-- Change the VPC nametag: `eng84_jose_vpc`
-- Configure IPv4 CIDR block to `0.0.0.0/16` where the first 2 numbers are unique. For example, `24.24.0.0/16`
-- Finally, `Create VPC`
-
-<u>__STEP 2: Create the Internet Gateway__</u>
-
-- Click `Internet Gateways`. Then `Create internet gateway`
-- Change the nametag: `eng84_jose_ig`
-- Click `Create Internet Gatway`.
-- Select the Internet Gateway you have created right now. Click `Actions`. Then `Attach to VPC`. Select the VPC you have created and attach the internet gateway.
-
-<u>__STEP 3: Create the subnets: Public and Private__</u>
-
-- First navigate to the subnet page and click the `create subnet` button.
-- Select your VPC.
-- Add the Subnet name as `eng84_jose_public_subnet`
-- Availability zone to `1c`.
-- IPv4 CIDR block to `24.24.1.0/24` as per the VPC IP. This is the IPV4 CIDR for this current subnet, the first two numbers of this must be the same as in VPC IPV4. The third number must be unique, it can't be the same as another subnet you have created. The fourth
-number must be 0. Finally we must follow that with /24.
-- Then click `Create Subnet`.
-- Repeat the above steps for the Private Subnet, but with the applicable name and the third number of the IPv4 CIDR block must be unique `24.24.2.0/24`.
-
-<u>__STEP 4: Managing the route tables__</u>
-
-- The first thing we have to do is go to the route table page and identify the one that is attached to our vpc. 
-- Rename it to `eng84_jose_public_rt`
-- Next you're going to want to give this subnet internet access by going to routes..
-- Click `Edit routes` and do the following:
-
-Set the destination to `0.0.0.0/0`.
-Set the target to `Internet Gateway`, then select your internet gateway.
-Save the configurations.
-
-- Now we will go back to the page we were on before and associate our public subnet with this route table, start by
-clicking on subnet associations and click on edit subnet associations. Select the public subnet you have created and click `save`.
-- Now we want to create a new route table for the private subnet (db) with no access to the internet. We will start by clicking
-create route table.
-- Set the Name tag: `eng84_jose_private_rt`.
-- Select your VPC and then click `Create`. NOTE: This route table is not connected to the internet.
-- We will now associate our private subnet in the same way as we did before.
-- With the new route table selected, select the Subnet Associations tab.
-- Click `Edit subnet associations` and select the private subnet you have created and finally save.
-- Your route tables are now setup.
-
-<u>__STEP 5: Creating the EC2 instances: App and DB__</u>
-
-<u>__STEP 6: Connecting to the instances__</u>
-
-<u>__STEP 7: Updating the database__</u>
-
-<u>__STEP 8: Adding a NACL to the VPC__</u>
+[Link](https://github.com/alfonso-torres/eng84_2tier_architecture_AWS) to follow step by step how to complete the task.
